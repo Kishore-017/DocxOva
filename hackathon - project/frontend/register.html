@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="login.html">Login</a>
+        <a href="register.html">Register</a>
+    </nav>
+    <div class="container">
+        <h2>Register</h2>
+        <div id="registrationDisabled" style="display: none; color: red; margin-bottom: 10px;">
+            Registration is currently disabled by the admin.
+        </div>
+        <form id="registerForm">
+            <input type="text" id="newUsername" placeholder="Username" required>
+            <input type="password" id="newPassword" placeholder="Password" required>
+            <button type="submit">Register</button>
+        </form>
+        <p id="message"></p>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        // Check if registration is allowed
+        function updateRegistrationUI() {
+            const allow = localStorage.getItem('allowRegistration') !== 'false'; // default true
+            const form = document.getElementById('registerForm');
+            const disabledMsg = document.getElementById('registrationDisabled');
+            if (!allow) {
+                form.style.display = 'none';
+                disabledMsg.style.display = 'block';
+            } else {
+                form.style.display = 'block';
+                disabledMsg.style.display = 'none';
+            }
+        }
+        updateRegistrationUI();
+
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('newUsername').value.trim();
+            const password = document.getElementById('newPassword').value.trim();
+            const message = document.getElementById('message');
+
+            if (!username || !password) {
+                message.style.color = 'red';
+                message.textContent = 'Username and password are required.';
+                return;
+            }
+
+            const users = getUsers();
+            if (users.some(u => u.username === username)) {
+                message.style.color = 'red';
+                message.textContent = 'Username already exists.';
+                return;
+            }
+
+            // Create new user (always role 'user')
+            const newUser = {
+                username,
+                password,
+                role: 'user',
+                registered: new Date().toLocaleString()
+            };
+            users.push(newUser);
+            saveUsers(users);
+
+            message.style.color = 'green';
+            message.textContent = 'Registration successful! You can now <a href="login.html">login</a>.';
+            document.getElementById('registerForm').reset();
+        });
+    </script>
+</body>
+</html>
