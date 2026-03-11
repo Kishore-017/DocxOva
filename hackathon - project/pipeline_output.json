@@ -1,0 +1,24 @@
+{
+    "document_info": {
+        "type": "PAN Card",
+        "filename": "D:\\Projects\\hackathon - project\\ocr_project\\img\\pan.png",
+        "processed_at": "2026-03-08 17:17:22.584440"
+    },
+    "extracted_data": [
+        {
+            "field": "Name",
+            "original": "Twitterpreet Singh",
+            "bcrypt_hash": "$2b$10$5ZH4WWxQ74DYUORymRsawuwlWZDvsuNaCnyZeTkUd5/3oAFj22X4q"
+        },
+        {
+            "field": "PAN Number",
+            "original": "BWZPS1234R",
+            "bcrypt_hash": "$2b$10$.M.AF63EpgsHn8tBI8Qw5uSnG.TM3RUQfpRzDamQ.z9IYV16K0xZ6"
+        },
+        {
+            "field": "DOB",
+            "original": "14/05/1995",
+            "bcrypt_hash": "$2b$10$t5t/pHEd9X/d7eQ0g0TkjeIpzb/DWbT.1wLYxq2XyHYqoSp3Yl97q"
+        }
+    ]
+}

@@ -1,0 +1,23 @@
+{
+    "document_info": {
+        "type": "PAN Card",
+        "timestamp": "2026-03-08 14:06:07.030974"
+    },
+    "extracted_data": [
+        {
+            "field": "Name",
+            "original": "Twitterpreet Singh",
+            "bcrypt_hash": "$2b$10$R2GcLzJENX7lbqrwXPbuLeujHYBuSc7HdWyGOaS0BAOdHVf5wgY5m"
+        },
+        {
+            "field": "PAN Number",
+            "original": "BWZPS1234R",
+            "bcrypt_hash": "$2b$10$1rMh/jiJc07Jk/Y2sbiMCOs7dKv1YNdfaKgYwVZ0gF.kypJM4GPdi"
+        },
+        {
+            "field": "DOB",
+            "original": "14/05/1995",
+            "bcrypt_hash": "$2b$10$sQubYTxCLH6VzDNIYiCI2OT8Xrg.gx3g6O9rNn4hVH4LETx0LaPJO"
+        }
+    ]
+}
