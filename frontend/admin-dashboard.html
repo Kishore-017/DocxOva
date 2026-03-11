@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="#" id="logout">Logout</a>
+    </nav>
+    <div class="container">
+        <h2>Admin Panel</h2>
+        <p>Welcome, <span id="adminName"></span> (Admin)</p>
+
+        <div class="admin-controls">
+            <h3>Global Settings</h3>
+            <label>
+                <input type="checkbox" id="allowRegistrationCheckbox"> Allow new user registration
+            </label>
+        </div>
+
+        <h3>Registered Users</h3>
+        <table id="userTable">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Registered</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        const adminUser = getCurrentUser();
+        if (!adminUser) {
+            window.location.href = 'login.html';
+        } else if (adminUser.role !== 'admin') {
+            window.location.href = 'user-dashboard.html';
+        } else {
+            document.getElementById('adminName').textContent = adminUser.username;
+        }
+
+        // Load and display users
+        function loadUsers() {
+            const users = getUsers();
+            const tbody = document.querySelector('#userTable tbody');
+            tbody.innerHTML = '';
+
+            users.forEach(u => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${u.username}</td>
+                    <td>${u.role}</td>
+                    <td>${u.registered || 'N/A'}</td>
+                    <td>
+                        ${u.username !== adminUser.username ? `
+                            <button class="delete-btn" data-username="${u.username}">Delete</button>
+                            <button class="toggle-role-btn" data-username="${u.username}">
+                                ${u.role === 'admin' ? 'Revoke Admin' : 'Make Admin'}
+                            </button>
+                        ` : 'You'}
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            // Attach delete event
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const username = this.dataset.username;
+                    if (confirm(`Delete user "${username}"?`)) {
+                        deleteUser(username);
+                        loadUsers(); // refresh table
+                    }
+                });
+            });
+
+            // Attach toggle role event
+            document.querySelectorAll('.toggle-role-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const username = this.dataset.username;
+                    toggleUserRole(username);
+                    loadUsers(); // refresh table
+                });
+            });
+        }
+
+        // Allow registration toggle
+        const allowRegCheckbox = document.getElementById('allowRegistrationCheckbox');
+        // Set initial state
+        allowRegCheckbox.checked = localStorage.getItem('allowRegistration') !== 'false';
+        allowRegCheckbox.addEventListener('change', function() {
+            localStorage.setItem('allowRegistration', this.checked);
+        });
+
+        // Logout
+        document.getElementById('logout').addEventListener('click', function(e) {
+            e.preventDefault();
+            logout();
+            window.location.href = 'index.html';
+        });
+
+        loadUsers();
+    </script>
+</body>
+</html>
